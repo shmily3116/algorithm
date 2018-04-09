@@ -1,21 +1,39 @@
 package leetcode;
 
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class NoRepeatingChar {
 
+    /**
+     * 关键：起始结束位置
+     * @param s
+     * @return
+     */
     public int lengthOfLongestSubstring(String s) {
         Map<Character, Integer> map = new HashMap<>();
-        int count = 0, maxCount = 0;
-        for (int i=0;i<s.length() - 1;i++){
+        int count = 0, lastStart = -1;
+        Integer start;
+        for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (map.containsKey(c)){
-                int start  = map.get(c);
+            if ((start = map.get(c)) != null) {
+                lastStart = Math.max(start, lastStart);
+            }
+            map.put(c, i);
+            count = Math.max(count, i - lastStart);
+        }
+        return count;
+    }
+
+    public int lengthOfLongestSubstringV2(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        int count = 0, maxCount = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (map.containsKey(c)) {
+                int start = map.get(c);
                 map.clear();
-                for (int j=start;j<=i;j++){
+                for (int j = start; j <= i; j++) {
                     map.put(s.charAt(j), j);
                 }
                 maxCount = i - start;
