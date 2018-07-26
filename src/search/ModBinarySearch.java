@@ -5,28 +5,50 @@ import java.util.Random;
 public class ModBinarySearch extends AbstractSearch {
 
     @Override
-    protected Integer actualSearch(Integer[] arrays, int target) {
-        int low = 0, high = arrays.length - 1, mid = (low + high) / 2;
-        while (mid != low){
-            if (arrays[mid] == target){
+    protected Integer actualSearch(Integer[] nums, int target) {
+        if (nums == null || nums.length == 0){
+            return -1;
+        }
+        if (nums.length == 1){
+            return nums[0] == target ? 0:-1;
+        }
+        int low = 0, high = nums.length - 1, mid = (low + high) / 2;
+        while (true){
+            if (nums[low] == target){
+                return low;
+            }
+            if (nums[mid] == target){
                 return mid;
             }
-            if (arrays[high] == target){
+            if (nums[high] == target){
                 return high;
             }
-            if (arrays[mid] < target){
-                if (arrays[high] > arrays[mid]){
-                    // 正常情况
+            if (mid == low || mid == high){
+                break;
+            }
+            if (nums[mid] < target){
+                if (nums[low] > nums[mid]){
+                    // pivot before mid
+                    if (nums[high] > target) {
+                        low = mid;
+                    } else {
+                        high = mid;
+                    }
+                }else {
+                    // pivot after mid
                     low = mid;
-                } else {
-                    // 特殊情况
-                    high = (mid + high) / 2;
                 }
             } else {
-                if (arrays[low] < arrays[mid]){
-                    high = mid;
+                if (nums[mid] > nums[low]){
+                    // pivot after mid
+                    if (target > nums[low]){
+                        high = mid;
+                    } else {
+                        low = mid;
+                    }
                 } else {
-                    low = (low + mid) / 2;
+                    // pivot before mid
+                    high = mid;
                 }
             }
             mid = (low + high) / 2;
@@ -41,5 +63,10 @@ public class ModBinarySearch extends AbstractSearch {
         System.arraycopy(arrays, pivot, changedArrays, 0, arrays.length - pivot);
         System.arraycopy(arrays, 0, changedArrays, arrays.length - pivot, pivot);
         return changedArrays;
+    }
+
+    public static void main(String[] args) {
+        Integer[] nums = {1,3,5};
+        System.out.println(new ModBinarySearch().actualSearch(nums, 1));
     }
 }
