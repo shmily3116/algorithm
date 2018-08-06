@@ -6,14 +6,14 @@ import java.util.List;
 public class ValidSudoku {
     public boolean isValidSudoku(char[][] board) {
         int[] ind = {1, 1, 1, 1, 1, 1, 1, 1, 1};
-        List<Character> numbers = Arrays.asList('1','2','3','4','5','6','7','8','9');
         for (int i=0;i<9;i++){
             int[] newInd = Arrays.copyOf(ind, ind.length);
             for (int j=0;j<9;j++){
                 char c = board[i][j];
                 if (c == '.')
                     continue;
-                if (!numbers.contains(c) || (--newInd[c - '1']) < 0){
+                if ((--newInd[c - '1']) < 0){
+                    System.out.println("(i,j):"+i+","+j);
                     return false;
                 }
             }
@@ -25,6 +25,7 @@ public class ValidSudoku {
                 if (c == '.')
                     continue;
                 if ((--newInd[c - '1']) < 0){
+                    System.out.println("(j,i):"+j+","+i);
                     return false;
                 }
             }
@@ -37,16 +38,15 @@ public class ValidSudoku {
                         char c = board[3*i+k][3*j+l];
                         if (c == '.')
                             continue;
-                        if (!numbers.contains(c) || (--newInd[c - '1']) < 0){
+                        if ((--newInd[c - '1']) < 0){
+                            System.out.println("(l,k):"+(3*i+k)+","+(3*j+l));
                             return false;
                         }
                     }
                 }
             }
         }
-
-
-        return false;
+        return true;
     }
 
     public static void main(String[] args) {
