@@ -23,10 +23,11 @@ public class LCommonS {
         String s2 = sb.toString();
         System.out.println(s1);
         System.out.println(s2);*/
-        System.out.println(lcs.find("zhahzkikoawleh", "zdfllkyjdxb"));
+        String s1 = "horse", s2 = "ros";
+        System.out.println(lcs.find(s1, s2));
         System.out.println(lcs.count);
         System.out.println(Math.log(lcs.count)/Math.log(2));
-        System.out.println(lcs.findInverse("zhahzkikoawleh", "zdfllkyjdxb"));
+        System.out.println(lcs.findInverse(s1, s2));
     }
     private int count = 0;
     public String find(String s1, String s2){
