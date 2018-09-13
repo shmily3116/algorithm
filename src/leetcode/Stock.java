@@ -63,17 +63,22 @@ public class Stock {
 
     public int maxProfitDP(int[] prices, int K){
         int[][] profit = new int[K][prices.length];
-        int curMax = 0, curMin = prices[0];
-        for (int i = 1; i < prices.length; i++){
-            profit[0][i] = Math.max(profit[0][i-1], prices[i] - curMin);
+        int curMax = 0, curMin = prices[0], tmpMax = 0;
+        for (int i=0;i<prices.length;i++){
+            if (prices[i] - curMin > curMax){
+                curMax = prices[i] - curMin;
+                profit[0][i] = curMax;
+            }
             if (prices[i] < curMin){
                 curMin = prices[i];
             }
-            for (int k = 1; k < K; k++) {
-                for (int j = 1; j < i; j++) {
-                    curMax = Math.max(curMax, profit[k-1][j] + prices[i] - prices[j]);
-                }
-                profit[k][i] = curMax;
+        }
+        for (int k = 1; k < K; k++) {
+            profit[k][0] = 0;
+            tmpMax = profit[k-1][0] - prices[0];
+            for (int i = 1; i < prices.length; i++) {
+                tmpMax = Math.max(tmpMax, profit[k-1][i-1] - prices[i-1]);
+                profit[k][i] = tmpMax;
             }
         }
         System.out.println(Arrays.toString(profit[0]));
